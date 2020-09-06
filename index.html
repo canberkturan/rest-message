@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Offline Messaging API</title>
+	</head>
+	<body>
+		<h1>RESTful Offline Messaging API</h1><hr>
+		<h3>How to use this API?</h4>
+		<p>
+		You can use this API with any HTTP Request App like cURL, Postman etc.
+		You need to add your username and password for authentication in every request body.
+		<p>
+		<h4>Creating a user</h4>
+		<p>
+		Send a POST request to https://localhost:8080/users that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD",
+	"name":"YOUR_FULL_NAME"
+}
+		</pre>
+		</p>
+		<h4>Getting user info</h4>
+		<p>
+		Send a GET request to https://localhost:8080/users/YOUR_USERNAME that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD"
+}
+		</pre>
+		</p>
+		<h4>Getting all users' info(admin)</h4>
+		<p>
+		If you are admin, send a GET request to https://localhost:8080/users/YOUR_USERNAME that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD"
+}
+		</pre>
+		</p>
+
+		<h4>Updating name of user profile</h4>
+		<p>
+		Send a PUT request to https://localhost:8080/users/YOUR_USERNAME that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD",
+	"name":"YOUR_NEW_FULL_NAME"
+}
+		</pre>
+		</p>
+		<h4>Deleting a user</h4>
+		<p>
+		Send a DELETE request to https://localhost:8080/users/YOUR_USERNAME that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD"
+}
+		</pre>
+		</p>
+		<h4>Sending a message</h4>
+		<p>Send a POST request to https://localhost:8080/messages/CHATMATE_USERNAME that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD",
+	"content":"YOUR_MESSAGE"
+}
+		</pre>
+		</p>
+		<h4>Getting messages from spesific user</h4>
+		<p>Send a GET request to https://localhost:8080/messages/CHATMATE_USERNAME that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD"
+}
+		</pre>
+		</p>
+		<h4>Getting all messages</h4>
+		<p>Send a GET request to https://localhost:8080/messages/ or https://localhost:8080/messages/all that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD"
+}
+		</pre>
+		</p>
+		<h4>Update a message</h4>
+		<p>Send a PUT request to https://localhost:8080/message/MESSAGE_ID that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD",
+	"content":"YOUR_MESSAGE"
+}
+		</pre>
+		</p>
+		<h4>Delete a message</h4>
+		<p>Send a DELETE request to https://localhost:8080/message/MESSAGE_ID that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD"
+}
+		</pre>
+		</p>
+
+	</body>
+</html>
