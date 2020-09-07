@@ -64,6 +64,27 @@
 }
 		</pre>
 		</p>
+		<h4>Blocking a user</h4>
+		<p>
+		Send a GET request to https://localhost:8080/users/BLOCKING_USERNAME/block that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD"
+}
+		</pre>
+		</p>
+		<h4>Unblocking a user</h4>
+		<p>
+		Send a GET request to https://localhost:8080/users/BLOCKED_USERNAME/unblock that includes this json data in its body:
+		<pre>
+{
+	"username":"YOUR_USERNAME",
+	"password":"YOUR_PASSWORD"
+}
+		</pre>
+		</p>
+
 		<h4>Sending a message</h4>
 		<p>Send a POST request to https://localhost:8080/messages/CHATMATE_USERNAME that includes this json data in its body:
 		<pre>
