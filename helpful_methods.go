@@ -40,7 +40,6 @@ func initLogger() *os.File {
 }
 
 func authCheck(username, password string) bool {
-	now := time.Now().String()
 	result, err := db.Query("SELECT password FROM users WHERE username = ?", username)
 
 	if err != nil {
@@ -67,7 +66,8 @@ func authCheck(username, password string) bool {
 	return false
 }
 
-func addReadInfo(messageID string, readDate string) {
+func addReadInfo(messageID string) {
+	readDate := time.Now().String()
 	stmt, err := db.Prepare("UPDATE messages SET readdate = ? WHERE id = ?")
 	if err != nil {
 		log("DBPREPERR", "Preparing Database is failed")
@@ -80,7 +80,7 @@ func addReadInfo(messageID string, readDate string) {
 	}
 }
 
-func log(logtype, message) {
+func log(logtype, message string) {
 	date := time.Now().String()
 	logMessage := logtype+": "+message+" \t"+date+"\n"
 	_, err := logger.WriteString(logMessage)

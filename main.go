@@ -37,7 +37,7 @@ func main() {
 	router.HandleFunc("/message/{id}", deleteMessage).Methods("DELETE")
 	router.NotFoundHandler = router.NewRoute().HandlerFunc(http.NotFound).GetHandler()
 
-	log("SERVERSTART", "Server is being started", "")
+	log("SERVERSTART", "Server is being started")
 	if IS_SECURE {
 		err := http.ListenAndServeTLS(":8080", "tls/server.crt", "tls/server.key", removeTrailingSlash(router))
 		if err != nil {
