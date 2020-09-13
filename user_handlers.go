@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"encoding/json"
-	"io/ioutil"
+	"fmt"
 	"github.com/gorilla/mux"
+	"io/ioutil"
+	"net/http"
 )
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
@@ -84,13 +84,13 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "A user with this username is already exist.")
 		log("ALREADYEXIST", "Username is already recorded")
 	} else {
-		_, err = stmt.Exec(username,name,password)
+		_, err = stmt.Exec(username, name, password)
 		if err != nil {
 			log("DBINSERTERR", "Something went wrong")
 			return
 		}
 		fmt.Fprintf(w, "New user was created")
-		log("USERCREATE", "A user was created with this username: " + keyVal["username"])
+		log("USERCREATE", "A user was created with this username: "+keyVal["username"])
 	}
 }
 
@@ -130,7 +130,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.NewEncoder(w).Encode(user)
-		log("USERFETCH",keyVal["username"] + " fetched its infos")
+		log("USERFETCH", keyVal["username"]+" fetched its infos")
 	}
 }
 
@@ -165,7 +165,7 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		fmt.Fprintf(w, "User with Username = %s was updated", params["username"])
-		log("USERUPDATE", keyVal["username"] + " updated its profile")
+		log("USERUPDATE", keyVal["username"]+" updated its profile")
 	}
 }
 
@@ -183,7 +183,7 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 
 	isAuth := authCheck(keyVal["username"], keyVal["password"])
 	if !isAuth || keyVal["username"] != params["username"] {
-		fmt.Fprintf(w,"You don't have permission to delete this user!")
+		fmt.Fprintf(w, "You don't have permission to delete this user!")
 	} else {
 		stmt, err := db.Prepare("DELETE FROM users WHERE username = ?")
 		if err != nil {
@@ -198,7 +198,7 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		fmt.Fprintf(w, "User with Username = %s was deleted", params["username"])
-		log("USERDEL", params["username"] + " was deleted")
+		log("USERDEL", params["username"]+" was deleted")
 	}
 }
 
@@ -216,13 +216,13 @@ func blockUser(w http.ResponseWriter, r *http.Request) {
 
 	isAuth := authCheck(keyVal["username"], keyVal["password"])
 	if !isAuth {
-		fmt.Fprintf(w,"You need to authenticate for blocking a user")
+		fmt.Fprintf(w, "You need to authenticate for blocking a user")
 	} else if keyVal["username"] == params["username"] {
 		fmt.Fprintf(w, "You can't block yourself :)")
 		log("SELFTBLOCK", "Someone tried to block itself.")
 	} else {
 		result, err := db.Query("SELECT blocked_username FROM blockings WHERE blocker_username = ? and blocked_username = ?",
-					keyVal["username"], params["username"])
+			keyVal["username"], params["username"])
 		if err != nil {
 			log("DBQUERYERR", "Database query process is failed.")
 			return
@@ -238,7 +238,7 @@ func blockUser(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if blockedUsername != "" {
-			fmt.Fprintf(w,"You are already blocked this username: %s",params["username"])
+			fmt.Fprintf(w, "You are already blocked this username: %s", params["username"])
 		} else {
 			stmt, err := db.Prepare("INSERT INTO blockings(blocker_username, blocked_username) VALUES(?,?)")
 			if err != nil {
@@ -246,13 +246,13 @@ func blockUser(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			_, err2 := stmt.Exec(keyVal["username"],params["username"])
+			_, err2 := stmt.Exec(keyVal["username"], params["username"])
 			if err2 != nil {
 				log("DBINSERTERR", "Something went wrong.")
 				return
 			}
 			fmt.Fprintf(w, "You've blocked '%s' username successfully", params["username"])
-			log("BLOCK", keyVal["username"] + " blocked " + params["username"])
+			log("BLOCK", keyVal["username"]+" blocked "+params["username"])
 		}
 	}
 }
@@ -271,13 +271,13 @@ func unblockUser(w http.ResponseWriter, r *http.Request) {
 
 	isAuth := authCheck(keyVal["username"], keyVal["password"])
 	if !isAuth {
-		fmt.Fprintf(w,"You need to authenticate for unblocking a user")
+		fmt.Fprintf(w, "You need to authenticate for unblocking a user")
 	} else if keyVal["username"] == params["username"] {
 		fmt.Fprintf(w, "You can't unblock yourself :)")
 		log("SELFBLOCK", "Someone tried to unblock itself.")
 	} else {
 		result, err := db.Query("SELECT blocked_username FROM blockings WHERE blocker_username = ? and blocked_username = ?",
-					keyVal["username"], params["username"])
+			keyVal["username"], params["username"])
 		if err != nil {
 			log("DBQUERYERR", "Database query process is failed.")
 			return
@@ -293,7 +293,7 @@ func unblockUser(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if blockedUsername == "" {
-			fmt.Fprintf(w,"You are not blocked this username: %s",params["username"])
+			fmt.Fprintf(w, "You are not blocked this username: %s", params["username"])
 		} else {
 			stmt, err := db.Prepare("DELETE FROM blockings WHERE blocker_username = ? AND blocked_username = ?")
 			if err != nil {
@@ -301,14 +301,13 @@ func unblockUser(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			_, err2 := stmt.Exec(keyVal["username"],params["username"])
+			_, err2 := stmt.Exec(keyVal["username"], params["username"])
 			if err2 != nil {
 				log("DBDELETEERR", "No records found to delete with WHERE statement")
 				return
 			}
 			fmt.Fprintf(w, "You've unblocked '%s' username successfully", params["username"])
-			log("BLOCK", keyVal["username"] + " unblocked " + params["username"])
+			log("BLOCK", keyVal["username"]+" unblocked "+params["username"])
 		}
 	}
 }
-

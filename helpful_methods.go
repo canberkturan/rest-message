@@ -1,20 +1,21 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
+	"net/http"
 	"os"
 	"strings"
-	"net/http"
-	"database/sql"
 	"time"
-	"fmt"
 )
+
 func removeTrailingSlash(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if r.URL.Path != "/" {
-				r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
-			}
-			next.ServeHTTP(w, r)
-		})
+		if r.URL.Path != "/" {
+			r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 func initDB() *sql.DB {
@@ -32,7 +33,7 @@ func initDB() *sql.DB {
 
 func initLogger() *os.File {
 	f, err := os.Create("server.log")
-        if err != nil {
+	if err != nil {
 		fmt.Println("Log file was not open somehow.")
 		return nil
 	}
@@ -82,7 +83,7 @@ func addReadInfo(messageID string) {
 
 func log(logtype, message string) {
 	date := time.Now().String()
-	logMessage := logtype+": "+message+" \t"+date+"\n"
+	logMessage := logtype + ": " + message + " \t" + date + "\n"
 	_, err := logger.WriteString(logMessage)
 	if err != nil {
 		panic(err.Error())

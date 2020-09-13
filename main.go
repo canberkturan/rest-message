@@ -2,10 +2,10 @@ package main
 
 import (
 	"database/sql"
-	_"github.com/mattn/go-sqlite3"
 	"github.com/gorilla/mux"
-	"net/http"
+	_ "github.com/mattn/go-sqlite3"
 	"html/template"
+	"net/http"
 	"os"
 )
 
@@ -20,7 +20,7 @@ func main() {
 	logger = initLogger()
 
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/",showIndex).Methods("GET")
+	router.HandleFunc("/", showIndex).Methods("GET")
 	router.HandleFunc("/users", getUsers).Methods("GET")
 	router.HandleFunc("/users", createUser).Methods("POST")
 	router.HandleFunc("/users/{username}", getUser).Methods("GET")
@@ -56,5 +56,5 @@ func main() {
 
 func showIndex(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.ParseFiles("index.html")
-	t.Execute(w,nil)
+	t.Execute(w, nil)
 }
