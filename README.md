@@ -3,7 +3,7 @@ Rest-Message is an Offline RESTful Messaging API that gives you messaging abilit
 
 ## How to install and run?
 - If you didn't install, you need to install go programming language firstly with running commands like below as root(sudo):
-> apt install go
+> apt install golang
 
 > pacman -S go
 - If you didn't set GOPATH and GOBIN variables you need to set(<i>if you use different shell instead of BASH you need to change ~/.bashrc to your shell's config file like ~/.zshrc</i>):
