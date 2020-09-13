@@ -75,15 +75,15 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer result.Close()
-	var user_name string
+	var newUserName string
 	for result.Next() {
-		err := result.Scan(&user_name)
+		err := result.Scan(&newUserName)
 		if err != nil {
 			log("VARSNOTMATCHED", "Variables are not matched with values", now)
 			return
 		}
 	}
-	if user_name == username {
+	if newUserName == username {
 		fmt.Fprintf(w, "A user with this username is already exist.")
 		log("ALREADYEXIST", "Username is already recorded", now)
 	} else {
@@ -236,15 +236,15 @@ func blockUser(w http.ResponseWriter, r *http.Request) {
 		}
 		defer result.Close()
 
-		var blocked_username string
+		var blockedUsername string
 		for result.Next() {
-			err := result.Scan(&blocked_username)
+			err := result.Scan(&blockedUsername)
 			if err != nil {
 				log("VARSNOTMATCHED", "Variables are not matched with values", now)
 				return
 			}
 		}
-		if blocked_username != "" {
+		if blockedUsername != "" {
 			fmt.Fprintf(w,"You are already blocked this username: %s",params["username"])
 		} else {
 			stmt, err := db.Prepare("INSERT INTO blockings(blocker_username, blocked_username) VALUES(?,?)")
@@ -292,15 +292,15 @@ func unblockUser(w http.ResponseWriter, r *http.Request) {
 		}
 		defer result.Close()
 
-		var blocked_username string
+		var blockedUsername string
 		for result.Next() {
-			err := result.Scan(&blocked_username)
+			err := result.Scan(&blockedUsername)
 			if err != nil {
 				log("VARSNOTMATCHED", "Variables are not matched with values", now)
 				return
 			}
 		}
-		if blocked_username == "" {
+		if blockedUsername == "" {
 			fmt.Fprintf(w,"You are not blocked this username: %s",params["username"])
 		} else {
 			stmt, err := db.Prepare("DELETE FROM blockings WHERE blocker_username = ? AND blocked_username = ?")

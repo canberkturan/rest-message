@@ -44,7 +44,7 @@ func authCheck(username, password string) bool {
 	result, err := db.Query("SELECT password FROM users WHERE username = ?", username)
 
 	if err != nil {
-		log("DBQUERYFAIL", "Database query process is failed", now)
+		log("DBQUERYFAIL", "Database query process is failed")
 		return false
 	}
 
@@ -55,37 +55,37 @@ func authCheck(username, password string) bool {
 	for result.Next() {
 		err := result.Scan(&realPassword)
 		if err != nil {
-			log("VARSNOTMATCH", "Variables are not matched with values", now)
+			log("VARSNOTMATCH", "Variables are not matched with values")
 			return false
 		}
 	}
 	if realPassword == password {
-		log("AUTHSUCC", "Username and password is correct.", now)
+		log("AUTHSUCC", "Username and password is correct.")
 		return true
 	}
-	log("AUTHFAIL", "Username or password is wrong", now)
+	log("AUTHFAIL", "Username or password is wrong")
 	return false
 }
 
-func addReadInfo(messageID string, read_date string) {
-	now := time.Now().String()
+func addReadInfo(messageID string, readDate string) {
 	stmt, err := db.Prepare("UPDATE messages SET readdate = ? WHERE id = ?")
 	if err != nil {
-		log("DBPREPERR", "Preparing Database is failed", now)
+		log("DBPREPERR", "Preparing Database is failed")
 		return
 	}
-	_, err2 := stmt.Exec(read_date, messageID)
+	_, err2 := stmt.Exec(readDate, messageID)
 	if err2 != nil {
-		log("DBUPTDATEERR", "No records found to update with WHERE statement", now)
+		log("DBUPTDATEERR", "No records found to update with WHERE statement")
 		return
 	}
 }
 
-func log(logtype, message, date string) {
-	log_message := logtype+": "+message+" \t"+date+"\n"
-	_, err := logger.WriteString(log_message)
+func log(logtype, message) {
+	date := time.Now().String()
+	logMessage := logtype+": "+message+" \t"+date+"\n"
+	_, err := logger.WriteString(logMessage)
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Println(log_message)
+	fmt.Println(logMessage)
 }
