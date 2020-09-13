@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/canberkturan/rest-message)](https://goreportcard.com/report/canberkturan/rest-message)
+
 # Rest-Message
 Rest-Message is an Offline RESTful Messaging API that gives you messaging ability on your LAN.
 
